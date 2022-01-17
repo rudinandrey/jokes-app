@@ -5,12 +5,15 @@ import 'models.dart';
 
 class Service {
   Future<JokesResponse> all(String uuid) async {
-    var url = Uri.https('crmit.ru', '/all', {'uuid': uuid});
+    var url = Uri.https('crmit.ru', '/list', {'uuid': uuid});
 
     var response = await http.get(url);
+    print(response.body);
     if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
+      var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
+      print(jsonResponse.length);
+    } else {
+      print("error");
     }
     var jokes = JokesResponse([], "success");
     return jokes;
