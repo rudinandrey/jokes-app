@@ -8,14 +8,13 @@ class Service {
     var url = Uri.https('crmit.ru', '/list', {'uuid': uuid});
 
     var response = await http.get(url);
-    print(response.body);
     if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
-      print(jsonResponse.length);
+      var jokes = (convert.jsonDecode(response.body) as List<dynamic>)
+          .map((e) => Joke.fromJson(e))
+          .toList();
+      return JokesResponse(jokes, "success");
     } else {
-      print("error");
+      return JokesResponse([], "error");
     }
-    var jokes = JokesResponse([], "success");
-    return jokes;
   }
 }
