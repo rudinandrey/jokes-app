@@ -7,6 +7,8 @@ class Service {
   Future<JokesResponse> all(String uuid) async {
     var url = Uri.https('crmit.ru', '/list', {'uuid': uuid});
 
+    print(uuid);
+
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var jokes = (convert.jsonDecode(response.body) as List<dynamic>)

@@ -1,15 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jokes/jokes_controller.dart';
 import 'package:jokes/vote.dart';
 
 void main() {
-  runApp(
-    GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyApp(),
-    ),
-  );
+  runZonedGuarded(() {
+    runApp(
+      GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: MyApp(),
+      ),
+    );
+  }, (dynamic error, dynamic stack) {
+    print("Something went wrong!");
+    print(error);
+    print(stack);
+  });
 }
 
 class MyApp extends StatelessWidget {
