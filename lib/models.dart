@@ -17,3 +17,11 @@ class JokesResponse {
 
   JokesResponse(this.jokes, this.result);
 }
+
+class VoteResponse {
+  final StatusLoad result;
+
+  VoteResponse(this.result);
+}
+
+enum VoteResolution { dislike, like }

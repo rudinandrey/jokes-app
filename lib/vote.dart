@@ -14,19 +14,30 @@ class Vote extends StatelessWidget {
       children: [
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Obx(
                 () => Text(
                   c.joke.value.joke,
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
               ),
             ),
           ),
         ),
+        Obx(
+          () => c.errorMessage.value != ""
+              ? Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    c.errorMessage.value,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                )
+              : Container(),
+        ),
         Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Obx(
             () => c.joke.value.id != 0
                 ? Row(
@@ -37,7 +48,7 @@ class Vote extends StatelessWidget {
                         onPressed: () {
                           c.like();
                         },
-                        child: Text("Нравится"),
+                        child: const Text("Нравится"),
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.green),
@@ -47,7 +58,7 @@ class Vote extends StatelessWidget {
                         onPressed: () {
                           c.dislike();
                         },
-                        child: Text("Не нравится"),
+                        child: const Text("Не нравится"),
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.red),

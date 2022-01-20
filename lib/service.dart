@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'models.dart';
 
 class Service {
-  Future<JokesResponse> all(String uuid) async {
-    var url = Uri.https('crmit.ru', '/list2', {'uuid': uuid});
+  static Future<JokesResponse> all(String uuid) async {
+    var url = Uri.https('crmit.ru', '/list', {'uuid': uuid});
 
     print(uuid);
 
@@ -17,6 +17,21 @@ class Service {
       return JokesResponse(jokes, StatusLoad.success);
     } else {
       return JokesResponse([], StatusLoad.error);
+    }
+  }
+
+  static Future<VoteResponse> vote(String uuid, int id, int resolution) async {
+    var url = Uri.https('crmit.ru', '/vote');
+    var response = await http.post(url, body: {
+      'uuid': uuid,
+      'id': id.toString(),
+      'resolution': resolution.toString(),
+    });
+
+    if (response.statusCode == 200) {
+      return VoteResponse(StatusLoad.success);
+    } else {
+      return VoteResponse(StatusLoad.error);
     }
   }
 }

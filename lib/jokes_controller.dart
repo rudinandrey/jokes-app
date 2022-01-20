@@ -11,17 +11,12 @@ import 'models.dart';
 class JokesController extends GetxController {
   var jokes = RxList<Joke>().obs;
   var joke = Joke(0, "").obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    print("init");
-  }
+  var errorMessage = "".obs;
+  String _uuid = "";
 
   void load(String uuid) {
-    Service s = Service();
-    s.all(uuid).then((JokesResponse response) {
-      print(response.result);
+    _uuid = uuid;
+    Service.all(uuid).then((JokesResponse response) {
       if (response.result == StatusLoad.success) {
         jokes.value.addAll(response.jokes);
         if (jokes.value.isNotEmpty) {
@@ -37,12 +32,14 @@ class JokesController extends GetxController {
 
   void like() {
     if (joke.value.id > 0) {
+      vote(_uuid, joke.value.id, 1);
       _next();
     }
   }
 
   void dislike() {
     if (joke.value.id > 0) {
+      vote(_uuid, joke.value.id, 0);
       _next();
     }
   }
@@ -53,5 +50,18 @@ class JokesController extends GetxController {
     } else {
       joke.value = Joke(0, "Анекдоты закончились");
     }
+  }
+
+  void vote(String uuid, int id, int resolution) async {
+    clearErrorMessage();
+    VoteResponse resp = await Service.vote(uuid, id, resolution);
+    if (resp.result == StatusLoad.error) {
+      errorMessage.value =
+          'Не удалось проголосовать, возможно проблема с Интернетом';
+    }
+  }
+
+  void clearErrorMessage() {
+    errorMessage.value = "";
   }
 }
