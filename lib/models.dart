@@ -9,9 +9,11 @@ class Joke {
         joke = json["joke"];
 }
 
+enum StatusLoad { success, error }
+
 class JokesResponse {
   final List<Joke> jokes;
-  final String result;
+  final StatusLoad result;
 
   JokesResponse(this.jokes, this.result);
 }

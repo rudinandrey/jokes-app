@@ -16,20 +16,23 @@ class JokesController extends GetxController {
   void onInit() {
     super.onInit();
     print("init");
+  }
 
+  void load(String uuid) {
     Service s = Service();
-    getUUID().then(
-      (uuid) => s.all(uuid).then((JokesResponse response) {
-        if (response.result == "success") {
-          jokes.value.addAll(response.jokes);
-          if (jokes.value.isNotEmpty) {
-            joke.value = jokes.value.removeAt(0);
-          } else {
-            joke.value = Joke(0, "Больше ничего нет");
-          }
+    s.all(uuid).then((JokesResponse response) {
+      print(response.result);
+      if (response.result == StatusLoad.success) {
+        jokes.value.addAll(response.jokes);
+        if (jokes.value.isNotEmpty) {
+          joke.value = jokes.value.removeAt(0);
+        } else {
+          joke.value = Joke(0, "Больше ничего нет");
         }
-      }),
-    );
+      } else {
+        joke.value = Joke(0, "Свежих анекдотов пока нет, приходите позже");
+      }
+    });
   }
 
   void like() {
@@ -50,29 +53,5 @@ class JokesController extends GetxController {
     } else {
       joke.value = Joke(0, "Анекдоты закончились");
     }
-  }
-
-  Future<String> getUUID() async {
-    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    print("DeviceInfoPlugin");
-    print(deviceInfoPlugin);
-    var info = await deviceInfoPlugin.androidInfo;
-    print("info");
-    print(info);
-
-    return getUniqUuid();
-
-    // if (Platform.isAndroid) {
-    //   var info = await deviceInfoPlugin.androidInfo;
-    //   print(info);
-    //   return info.androidId != null ? info.androidId! : getUniqUuid();
-    // } else {
-    //   return getUniqUuid();
-    // }
-  }
-
-  String getUniqUuid() {
-    String time = (DateTime.now()).millisecondsSinceEpoch.toString();
-    return sha256.convert(utf8.encode(time)).toString();
   }
 }

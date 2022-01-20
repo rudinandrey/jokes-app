@@ -5,7 +5,7 @@ import 'models.dart';
 
 class Service {
   Future<JokesResponse> all(String uuid) async {
-    var url = Uri.https('crmit.ru', '/list', {'uuid': uuid});
+    var url = Uri.https('crmit.ru', '/list2', {'uuid': uuid});
 
     print(uuid);
 
@@ -14,9 +14,9 @@ class Service {
       var jokes = (convert.jsonDecode(response.body) as List<dynamic>)
           .map((e) => Joke.fromJson(e))
           .toList();
-      return JokesResponse(jokes, "success");
+      return JokesResponse(jokes, StatusLoad.success);
     } else {
-      return JokesResponse([], "error");
+      return JokesResponse([], StatusLoad.error);
     }
   }
 }
